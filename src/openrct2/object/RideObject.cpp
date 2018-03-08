@@ -85,7 +85,7 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     // Read peep loading positions
     for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
-        _peepLoadingPositionsXY[i].clear();
+        _peepLoadingWaypoints[i].clear();
         _peepLoadingPositions[i].clear();
 
         uint16 numPeepLoadingPositions = stream->ReadValue<uint8>();
@@ -94,24 +94,24 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
             numPeepLoadingPositions = stream->ReadValue<uint16>();
         }
         
-        if (_legacyType.vehicles[i].flags & VEHICLE_ENTRY_FLAG_XY_LOADING_POSITIONS)
+        if (_legacyType.vehicles[i].flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS)
         {
             _legacyType.vehicles[i].peep_loading_xy_type = stream->ReadValue<sint8>() == 0 ? peep_loading_type::xy_1 : peep_loading_type::xy_2;
 
-            Guard::Assert(((numPeepLoadingPositions - 1) % 8) == 0, "Malformed peed loading positions");
+            Guard::Assert(((numPeepLoadingPositions - 1) % 8) == 0, "Malformed peep loading positions");
 
             for (sint32 j = 1; j < numPeepLoadingPositions; j += 4 * 2)
             {
-                peep_loading_xy_entry entry;
-                entry.entrance.x = stream->ReadValue<sint8>();
-                entry.entrance.y = stream->ReadValue<sint8>();
-                entry.exit_waypoint.x = stream->ReadValue<sint8>();
-                entry.exit_waypoint.y = stream->ReadValue<sint8>();
-                entry.exit.x = stream->ReadValue<sint8>();
-                entry.exit.y = stream->ReadValue<sint8>();
+                std::array<sLocationXY8, 3> entry;
+                entry[0].x = stream->ReadValue<sint8>();
+                entry[0].y = stream->ReadValue<sint8>();
+                entry[1].x = stream->ReadValue<sint8>();
+                entry[1].y = stream->ReadValue<sint8>();
+                entry[2].x = stream->ReadValue<sint8>();
+                entry[2].y = stream->ReadValue<sint8>();
                 stream->ReadValue<uint16>(); // Skip blanks
 
-                _peepLoadingPositionsXY[i].push_back(entry);
+                _peepLoadingWaypoints[i].push_back(entry);
             }
         }
         else
@@ -305,7 +305,7 @@ void RideObject::Load()
                 }
             }
             vehicleEntry->peep_loading_positions = _peepLoadingPositions[i];
-            vehicleEntry->peep_loading_xy_positions = _peepLoadingPositionsXY[i];
+            vehicleEntry->peep_loading_waypoints = _peepLoadingWaypoints[i];
         }
     }
 }

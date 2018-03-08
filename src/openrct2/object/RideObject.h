@@ -26,7 +26,7 @@ private:
     rct_ride_entry              _legacyType = { };
     vehicle_colour_preset_list  _presetColours = { 0 };
     std::vector<sint8>          _peepLoadingPositions[4];
-    std::vector<peep_loading_xy_entry> _peepLoadingPositionsXY[4];
+    std::vector<std::array<sLocationXY8, 3> > _peepLoadingWaypoints[4];
     uint16                      _peepLoadingPositionsCount[4] = { 0 };
 
 public:
