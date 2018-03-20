@@ -27,7 +27,6 @@ private:
     vehicle_colour_preset_list  _presetColours = { 0 };
     std::vector<sint8>          _peepLoadingPositions[4];
     std::vector<std::array<sLocationXY8, 3> > _peepLoadingWaypoints[4];
-    uint16                      _peepLoadingPositionsCount[4] = { 0 };
 
 public:
     explicit RideObject(const rct_object_entry &entry) : Object(entry) { }
