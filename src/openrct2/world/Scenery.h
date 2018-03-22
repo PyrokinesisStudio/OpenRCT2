@@ -64,7 +64,7 @@ struct rct_large_scenery_text_glyph {
     uint8 image_offset;
     uint8 width;
     uint8 height;
-    uint8 var_3;
+    uint8 fresh_timeout;
 };
 assert_struct_size(rct_large_scenery_text_glyph, 4);
 
